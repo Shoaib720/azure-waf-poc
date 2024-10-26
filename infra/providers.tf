@@ -4,10 +4,6 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "4.7.0"
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.6.3"
-    }
   }
   backend "azurerm" {
     resource_group_name  = "basic-rg"
