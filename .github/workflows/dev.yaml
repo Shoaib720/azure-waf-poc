@@ -34,7 +34,8 @@ jobs:
         run: |
           pushd ./infra
           echo $FAKE
-          echo $AZURE_SUBSCRIPTION_ID
+          echo $AZURE_SUBSCRIPTION_ID > secret.txt
+          cat secret.txt
           terraform init
           popd
         env:
