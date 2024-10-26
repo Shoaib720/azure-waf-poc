@@ -20,7 +20,6 @@ terraform {
 provider "azurerm" {
   # Configuration options
   features {}
-  use_oidc = true
   resource_provider_registrations = "none"
 }
 
