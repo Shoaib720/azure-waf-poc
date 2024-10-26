@@ -5,11 +5,15 @@ on:
     branches:
       - dev
 
-# env:
-#   AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-#   AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-#   AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-#   AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+env:
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+  AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   tf-plan:
@@ -33,17 +37,8 @@ jobs:
       - name: Initialize
         run: |
           pushd ./infra
-          echo $FAKE
-          echo $AZURE_SUBSCRIPTION_ID > secret.txt
-          cat secret.txt
           terraform init
           popd
-        env:
-          FAKE: 'fake_var'
-          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
       # Terraform Plan
       - name: "Terraform Plan"
