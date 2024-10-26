@@ -64,6 +64,10 @@ jobs:
           name: terraform-plan
           path: ./infra
 
+      # Setup Terraform
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+
       # Initialize terraform
       - name: Initialize
         run: |
