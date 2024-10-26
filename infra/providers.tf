@@ -22,7 +22,3 @@ provider "azurerm" {
   features {}
   resource_provider_registrations = "none"
 }
-
-provider "random" {
-  # Configuration options
-}

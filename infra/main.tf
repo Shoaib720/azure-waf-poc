@@ -9,19 +9,10 @@
 locals {
   location = "Central India"
   env      = "Test"
-  suffix   = random_string.random.id
-}
-
-resource "random_string" "random" {
-  length  = 8
-  special = false
-  upper   = false
-  lower   = true
-  numeric = true
 }
 
 resource "azurerm_resource_group" "azure_rg" {
-  name     = "rg-${var.project}-${local.suffix}"
+  name     = "rg-${var.project}"
   location = local.location
   tags = {
     environment = local.env
@@ -29,14 +20,14 @@ resource "azurerm_resource_group" "azure_rg" {
 }
 
 # resource "azurerm_virtual_network" "vnet" {
-#   name                = "vnet-${var.project}-${local.suffix}"
+#   name                = "vnet-${var.project}"
 #   location            = local.location
 #   resource_group_name = azurerm_resource_group.azure_rg.name
 #   address_space       = ["10.0.0.0/16"]
 #   dns_servers         = ["10.0.0.4", "10.0.0.5"]
 
 #   subnet {
-#     name             = "snet-${var.project}-${local.suffix}"
+#     name             = "snet-${var.project}"
 #     address_prefixes = ["10.0.1.0/24"]
 #     # security_group   = azurerm_network_security_group.example.id
 #   }
@@ -47,7 +38,7 @@ resource "azurerm_resource_group" "azure_rg" {
 # }
 
 resource "azurerm_log_analytics_workspace" "log_workspace" {
-  name                = "law-${var.project}-${local.suffix}"
+  name                = "law-${var.project}"
   location            = local.location
   resource_group_name = azurerm_resource_group.azure_rg.name
   sku                 = "PerGB2018"
@@ -55,14 +46,14 @@ resource "azurerm_log_analytics_workspace" "log_workspace" {
 }
 
 resource "azurerm_container_app_environment" "app_env" {
-  name                       = "appenv-${var.project}-${local.suffix}"
+  name                       = "appenv-${var.project}"
   location                   = local.location
   resource_group_name        = azurerm_resource_group.azure_rg.name
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_workspace.id
 }
 
 resource "azurerm_container_app" "app" {
-  name                         = "app-${var.project}-${local.suffix}"
+  name                         = "app-${var.project}"
   container_app_environment_id = azurerm_container_app_environment.app_env.id
   resource_group_name          = azurerm_resource_group.azure_rg.name
   revision_mode                = "Single"
