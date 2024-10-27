@@ -92,6 +92,7 @@ resource "azurerm_application_gateway" "network" {
     port                  = 80
     protocol              = "Http"
     request_timeout       = 60
+    pick_host_name_from_backend_address = true
     probe_name = "${var.project}-healthprobe"
   }
 
@@ -126,10 +127,10 @@ resource "azurerm_application_gateway" "network" {
     timeout = 10
     protocol = "Http"
     path = "/"
-    host = azurerm_container_app.app.latest_revision_fqdn
+    pick_host_name_from_backend_http_settings = true
     unhealthy_threshold = 3
     match {
-      status_code = [ "200-299", "404" ]
+      status_code = [ "200-299" ]
     }
   }
 
