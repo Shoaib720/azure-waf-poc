@@ -177,3 +177,26 @@ resource "azurerm_container_app" "app" {
     }
   }
 }
+
+resource "azurerm_monitor_diagnostic_setting" "example" {
+  name               = "diag-settings-${var.project}"
+  target_resource_id = azurerm_application_gateway.network.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log_workspace.id
+
+  enabled_log {
+    category = "ActivityLog"
+  }
+
+  enabled_log {
+    category = "ApplicationGatewayAccessLog"
+  }
+
+  enabled_log {
+    category = "ApplicationGatewayFirewallLog"
+  }
+
+  metric {
+    category = "AllMetrics"
+    enabled = true
+  }
+}
