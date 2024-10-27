@@ -48,7 +48,7 @@ resource "azurerm_public_ip" "agw_pip" {
   name                = "pip-${var.project}"
   resource_group_name = azurerm_resource_group.azure_rg.name
   location            = local.location
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
 
   tags = {
     environment = local.env
