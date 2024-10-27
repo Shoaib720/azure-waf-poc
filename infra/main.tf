@@ -92,6 +92,7 @@ resource "azurerm_application_gateway" "network" {
     port                  = 80
     protocol              = "Http"
     request_timeout       = 60
+    probe_name = "${var.project}-healthprobe"
   }
 
   http_listener {
