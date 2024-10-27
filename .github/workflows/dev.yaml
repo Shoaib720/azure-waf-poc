@@ -50,36 +50,36 @@ jobs:
           name: terraform-plan
           path: infra/plan.tfplan
 
-  # tf-apply:
-  #   name: Apply
-  #   runs-on: ubuntu-latest
-  #   needs: tf-plan
-  #   steps:
-  #     # Checkout the code
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
+  tf-apply:
+    name: Apply
+    runs-on: ubuntu-latest
+    needs: tf-plan
+    steps:
+      # Checkout the code
+      - name: Checkout
+        uses: actions/checkout@v3
 
-  #     - name: Download Plan
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: terraform-plan
-  #         path: ./infra
+      - name: Download Plan
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-plan
+          path: ./infra
 
-  #     # Setup Terraform
-  #     - name: Install Terraform
-  #       uses: hashicorp/setup-terraform@v3
+      # Setup Terraform
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
 
-  #     # Initialize terraform
-  #     - name: Initialize
-  #       run: |
-  #         pushd ./infra
-  #         terraform init
-  #         popd
+      # Initialize terraform
+      - name: Initialize
+        run: |
+          pushd ./infra
+          terraform init
+          popd
 
-  #     # Terraform Plan
-  #     - name: "Terraform Apply"
-  #       id: apply
-  #       run: |
-  #         pushd ./infra
-  #         terraform apply plan.tfplan
-  #         popd
+      # Terraform Plan
+      - name: "Terraform Apply"
+        id: apply
+        run: |
+          pushd ./infra
+          terraform apply plan.tfplan
+          popd
