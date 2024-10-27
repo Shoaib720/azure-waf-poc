@@ -4,10 +4,6 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "4.7.0"
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.6.3"
-    }
   }
   backend "azurerm" {
     resource_group_name  = "basic-rg"
@@ -21,8 +17,4 @@ provider "azurerm" {
   # Configuration options
   features {}
   resource_provider_registrations = "none"
-}
-
-provider "random" {
-  # Configuration options
 }

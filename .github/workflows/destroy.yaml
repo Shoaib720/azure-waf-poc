@@ -1,0 +1,83 @@
+name: OWASP Juice Shop Destroy Infrastructure
+
+on:
+  workflow_dispatch:
+
+env:
+  PROJECT: owaspjuiceshop
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+jobs:
+  tf-plan:
+    name: Destroy Plan
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Setup Terraform
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Initialize terraform
+      - name: Initialize
+        run: |
+          pushd ./infra
+          terraform init
+          popd
+
+      # Terraform Plan
+      - name: "Terraform Plan"
+        id: plan
+        run: |
+          pushd ./infra
+          terraform plan \
+            -destroy \
+            -out=plan.tfplan \
+            -var="project=${{env.PROJECT}}"
+          popd
+
+      # Upload plan file as artifact
+      - name: Upload Plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-plan
+          path: infra/plan.tfplan
+
+  tf-apply:
+    name: Destroy
+    runs-on: ubuntu-latest
+    needs: tf-plan
+    steps:
+      # Checkout the code
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download Plan
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-plan
+          path: ./infra
+
+      # Setup Terraform
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Initialize terraform
+      - name: Initialize
+        run: |
+          pushd ./infra
+          terraform init
+          popd
+
+      # Terraform Plan
+      - name: "Terraform Apply"
+        id: apply
+        run: |
+          pushd ./infra
+          terraform apply plan.tfplan
+          popd
