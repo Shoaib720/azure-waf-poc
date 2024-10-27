@@ -188,6 +188,10 @@ resource "azurerm_monitor_diagnostic_setting" "example" {
   }
 
   enabled_log {
+    category = "ApplicationGatewayPerformanceLog"
+  }
+
+  enabled_log {
     category = "ApplicationGatewayFirewallLog"
   }
 
