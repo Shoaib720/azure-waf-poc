@@ -119,6 +119,19 @@ resource "azurerm_application_gateway" "network" {
     request_body_check       = true
   }
 
+  probe {
+    name = "${var.project}-healthprobe"
+    interval = 30
+    timeout = 10
+    protocol = "Http"
+    path = "/"
+    host = azurerm_container_app.app.latest_revision_fqdn
+    unhealthy_threshold = 3
+    match {
+      status_code = [ "200-299", "404" ]
+    }
+  }
+
 }
 
 resource "azurerm_log_analytics_workspace" "log_workspace" {
