@@ -1,10 +1,7 @@
-name: OWASP Juice Shop Development
+name: OWASP Juice Shop Destroy Infrastructure
 
 on:
-  push:
-    branches:
-      - dev
-      - feature/az-waf
+  workflow_dispatch:
 
 env:
   PROJECT: owaspjuiceshop
@@ -15,7 +12,7 @@ env:
 
 jobs:
   tf-plan:
-    name: Plan
+    name: Destroy Plan
     runs-on: ubuntu-latest
     steps:
       # Checkout the code
@@ -39,6 +36,7 @@ jobs:
         run: |
           pushd ./infra
           terraform plan \
+            -destroy \
             -out=plan.tfplan \
             -var="project=${{env.PROJECT}}"
           popd
@@ -51,7 +49,7 @@ jobs:
           path: infra/plan.tfplan
 
   tf-apply:
-    name: Apply
+    name: Destroy
     runs-on: ubuntu-latest
     needs: tf-plan
     steps:
