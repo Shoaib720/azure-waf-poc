@@ -184,10 +184,6 @@ resource "azurerm_monitor_diagnostic_setting" "example" {
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_workspace.id
 
   enabled_log {
-    category = "ActivityLog"
-  }
-
-  enabled_log {
     category = "ApplicationGatewayAccessLog"
   }
 
