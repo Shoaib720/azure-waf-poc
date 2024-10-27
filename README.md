@@ -9,6 +9,8 @@ In this PoC we will:
 - Set the WAF mode to "PREVENT" (this mode will detect and prevent the attacks)
 - Again perform the SQL Injection attack and observe the logs
 
+![Flow](./docs/__assets__/flow.png)
+
 ## Requirements
 1. Github Account
 2. Azure Account
